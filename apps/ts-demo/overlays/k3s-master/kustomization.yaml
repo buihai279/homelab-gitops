@@ -4,4 +4,4 @@ resources:
   - ../../base
 images:
   - name: ghcr.io/buihai279/homelab-gitops/ts-demo
-    newTag: latest
+    newTag: e7069e8038f8916fd8958ed8bf95763f310f7495
