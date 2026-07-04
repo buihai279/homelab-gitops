@@ -3,3 +3,4 @@ kind: Kustomization
 resources:
   - ../../../apps/demo/overlays/k3s-master
   - ../../../apps/ts-demo/overlays/k3s-master
+  - ../../../apps/headlamp/overlays/k3s-master
