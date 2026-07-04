@@ -1,0 +1,6 @@
+.DS_Store
+.env
+*.kubeconfig
+kubeconfig
+*.agekey
+.sops.yaml.local
