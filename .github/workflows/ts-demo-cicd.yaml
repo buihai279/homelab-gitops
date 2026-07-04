@@ -33,11 +33,10 @@ jobs:
         with:
           node-version: 22
           cache: pnpm
-          cache-dependency-path: services/ts-demo/pnpm-lock.yaml
 
       - name: Install dependencies
         working-directory: services/ts-demo
-        run: pnpm install --no-frozen-lockfile
+        run: pnpm install --frozen-lockfile
 
       - name: Typecheck
         working-directory: services/ts-demo
