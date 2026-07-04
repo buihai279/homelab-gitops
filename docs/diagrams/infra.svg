@@ -1,0 +1,75 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1000" viewBox="0 0 1600 1000">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#555"/></marker>
+    <style>
+      text{font-family:Arial,Helvetica,sans-serif;fill:#222}.title{font-size:24px;font-weight:700}.box-title{font-weight:700}.small{font-size:12px}.medium{font-size:13px}.lane-title{font-size:14px;font-weight:700}.edge{fill:none;stroke:#555;stroke-width:2;marker-end:url(#arrow)}.label{font-size:11px;fill:#333}.label-bg{fill:white;stroke:none;opacity:.9}.blue{fill:#dae8fc;stroke:#6c8ebf}.green{fill:#d5e8d4;stroke:#82b366}.yellow{fill:#fff2cc;stroke:#d6b656}.orange{fill:#ffe6cc;stroke:#d79b00}.purple{fill:#e1d5e7;stroke:#9673a6}.grey{fill:#f5f5f5;stroke:#666}.lane{stroke-width:2}.box{stroke-width:2}.thin{stroke-width:1.5}.mono{font-family:Menlo,Consolas,monospace}
+    </style>
+  </defs>
+  <rect width="1600" height="1000" fill="#ffffff"/>
+  <text x="800" y="48" text-anchor="middle" class="title">Homelab GitOps Infrastructure - k3s on Multipass</text>
+
+  <!-- Operator and Git -->
+  <rect x="40" y="170" width="220" height="100" rx="10" class="blue box"/>
+  <text x="150" y="198" text-anchor="middle" class="medium box-title">Operator Workstation</text><text x="150" y="222" text-anchor="middle" class="medium">Mac / Craft Agent / Lens</text><text x="150" y="246" text-anchor="middle" class="medium">LAN client</text>
+  <rect x="40" y="410" width="220" height="100" rx="10" class="grey box"/>
+  <text x="150" y="438" text-anchor="middle" class="medium box-title">GitHub</text><text x="150" y="462" text-anchor="middle" class="medium mono">buihai279/homelab-gitops</text><text x="150" y="486" text-anchor="middle" class="medium">Source of Truth</text>
+  <rect x="40" y="610" width="300" height="120" rx="10" class="grey box"/>
+  <text x="190" y="637" text-anchor="middle" class="medium box-title">Repo Layout</text><text x="190" y="661" text-anchor="middle" class="small mono">infrastructure/hosts/multipass/k3s-master</text><text x="190" y="684" text-anchor="middle" class="small mono">clusters/k3s-master</text><text x="190" y="707" text-anchor="middle" class="small mono">platform/ • apps/demo</text>
+
+  <!-- Physical host lane -->
+  <rect x="330" y="100" width="430" height="540" rx="8" class="yellow lane"/>
+  <rect x="330" y="100" width="430" height="36" rx="8" fill="#fff2cc" stroke="#d6b656" stroke-width="2"/>
+  <text x="545" y="124" text-anchor="middle" class="lane-title">Physical Host - 192.168.1.17 | Ubuntu 26.04 / ThinkPad T14</text>
+  <rect x="360" y="170" width="160" height="70" rx="10" class="orange box"/>
+  <text x="440" y="196" text-anchor="middle" class="small box-title">Multipass + QEMU</text><text x="440" y="219" text-anchor="middle" class="small">VM lifecycle</text>
+  <rect x="560" y="170" width="160" height="70" rx="10" class="orange box"/>
+  <text x="640" y="196" text-anchor="middle" class="small box-title">mpqemubr0 bridge</text><text x="640" y="219" text-anchor="middle" class="small mono">10.36.112.1</text>
+  <rect x="360" y="290" width="360" height="80" rx="10" class="purple box"/>
+  <text x="540" y="313" text-anchor="middle" class="small box-title">systemd TCP proxy: k3s-port80-proxy</text><text x="540" y="337" text-anchor="middle" class="small mono">0.0.0.0:80 → 10.36.112.57:80</text>
+  <rect x="360" y="400" width="360" height="80" rx="10" class="purple box"/>
+  <text x="540" y="423" text-anchor="middle" class="small box-title">systemd TCP proxy: k3s-api-proxy</text><text x="540" y="447" text-anchor="middle" class="small mono">0.0.0.0:6443 → 10.36.112.57:6443</text>
+  <rect x="360" y="520" width="360" height="70" rx="10" class="green box"/>
+  <text x="540" y="545" text-anchor="middle" class="small box-title">Lens kubeconfig</text><text x="540" y="568" text-anchor="middle" class="small mono">~/.kube/k3s-master-192.168.1.17-lens.yaml</text>
+
+  <!-- VM lane -->
+  <rect x="840" y="100" width="650" height="660" rx="8" class="green lane"/>
+  <rect x="840" y="100" width="650" height="46" rx="8" fill="#d5e8d4" stroke="#82b366" stroke-width="2"/>
+  <text x="1165" y="120" text-anchor="middle" class="lane-title">Multipass VM - k3s-master</text><text x="1165" y="139" text-anchor="middle" class="small">Ubuntu 24.04 LTS | 2 CPU | 4GB RAM | 10GB SSD | IP: 10.36.112.57</text>
+  <rect x="870" y="170" width="240" height="90" rx="10" class="green box"/>
+  <text x="990" y="197" text-anchor="middle" class="medium box-title">k3s single-node cluster</text><text x="990" y="222" text-anchor="middle" class="small mono">v1.36.2+k3s1</text><text x="990" y="244" text-anchor="middle" class="small">control-plane Ready</text>
+  <rect x="1190" y="180" width="220" height="70" rx="10" class="purple box"/>
+  <text x="1300" y="207" text-anchor="middle" class="small box-title">Kubernetes API</text><text x="1300" y="230" text-anchor="middle" class="small mono">:6443</text>
+  <rect x="1190" y="310" width="220" height="80" rx="10" class="orange box"/>
+  <text x="1300" y="335" text-anchor="middle" class="small box-title">Traefik Ingress</text><text x="1300" y="359" text-anchor="middle" class="small">LoadBalancer</text><text x="1300" y="381" text-anchor="middle" class="small mono">80 / 443</text>
+  <rect x="1190" y="460" width="220" height="90" rx="10" class="blue box"/>
+  <text x="1300" y="486" text-anchor="middle" class="small box-title">demo namespace</text><text x="1300" y="510" text-anchor="middle" class="small">whoami Deployment + Service</text><text x="1300" y="533" text-anchor="middle" class="small">Catch-all Ingress</text>
+  <rect x="870" y="330" width="240" height="130" rx="10" class="yellow box"/>
+  <text x="990" y="356" text-anchor="middle" class="small box-title">Flux CD controllers</text><text x="990" y="382" text-anchor="middle" class="small">source-controller</text><text x="990" y="404" text-anchor="middle" class="small">kustomize-controller</text><text x="990" y="426" text-anchor="middle" class="small">helm-controller / notification</text>
+  <rect x="870" y="550" width="240" height="100" rx="10" class="grey box"/>
+  <text x="990" y="577" text-anchor="middle" class="small box-title">Core k3s Add-ons</text><text x="990" y="602" text-anchor="middle" class="small">CoreDNS • metrics-server</text><text x="990" y="626" text-anchor="middle" class="small">local-path-provisioner</text>
+
+  <!-- Edges -->
+  <path d="M260 205 H360" class="edge"/><rect x="288" y="184" width="62" height="18" class="label-bg"/><text x="319" y="198" text-anchor="middle" class="label">HTTP :80</text>
+  <path d="M260 235 H300 V440 H360" class="edge"/><rect x="274" y="417" width="86" height="18" class="label-bg"/><text x="317" y="431" text-anchor="middle" class="label">Kube API :6443</text>
+  <path d="M150 270 V555 H360" class="edge"/><rect x="178" y="536" width="58" height="18" class="label-bg"/><text x="207" y="550" text-anchor="middle" class="label">Lens uses</text>
+  <path d="M520 205 H560" class="edge"/><rect x="512" y="184" width="70" height="18" class="label-bg"/><text x="547" y="198" text-anchor="middle" class="label">manages</text>
+  <path d="M720 205 H840" class="edge"/><rect x="756" y="184" width="58" height="18" class="label-bg"/><text x="785" y="198" text-anchor="middle" class="label">routes to</text>
+  <path d="M720 330 H1190" class="edge"/><rect x="916" y="309" width="72" height="18" class="label-bg"/><text x="952" y="323" text-anchor="middle" class="label">forward :80</text>
+  <path d="M720 440 H795 V215 H1190" class="edge"/><rect x="803" y="273" width="84" height="18" class="label-bg"/><text x="845" y="287" text-anchor="middle" class="label">forward :6443</text>
+  <path d="M1300 390 V460" class="edge"/><rect x="1258" y="415" width="84" height="18" class="label-bg"/><text x="1300" y="429" text-anchor="middle" class="label">ingress routes</text>
+  <path d="M1110 395 H1190" class="edge"/><rect x="1124" y="374" width="62" height="18" class="label-bg"/><text x="1155" y="388" text-anchor="middle" class="label">reconciles</text>
+  <path d="M260 460 H810 V395 H870" class="edge"/><rect x="472" y="439" width="72" height="18" class="label-bg"/><text x="508" y="453" text-anchor="middle" class="label">watches Git</text>
+  <path d="M150 510 V610" class="edge"/><rect x="107" y="548" width="86" height="18" class="label-bg"/><text x="150" y="562" text-anchor="middle" class="label">repo contains</text>
+  <path d="M990 260 V330" class="edge"/><rect x="932" y="288" width="116" height="18" class="label-bg"/><text x="990" y="302" text-anchor="middle" class="label">runs GitOps controllers</text>
+  <path d="M990 260 V550" class="edge"/><rect x="934" y="505" width="112" height="18" class="label-bg"/><text x="990" y="519" text-anchor="middle" class="label">cluster components</text>
+  <path d="M1110 215 H1190" class="edge"/><rect x="1118" y="194" width="64" height="18" class="label-bg"/><text x="1150" y="208" text-anchor="middle" class="label">serves API</text>
+
+  <!-- Legend -->
+  <rect x="1260" y="800" width="230" height="150" fill="none" stroke="#666"/>
+  <text x="1272" y="822" class="small box-title">Legend</text>
+  <rect x="1270" y="832" width="30" height="16" class="blue thin"/><text x="1310" y="845" class="small">Client/App workload</text>
+  <rect x="1270" y="856" width="30" height="16" class="green thin"/><text x="1310" y="869" class="small">Cluster / VM</text>
+  <rect x="1270" y="880" width="30" height="16" class="orange thin"/><text x="1310" y="893" class="small">Network / Ingress</text>
+  <rect x="1270" y="904" width="30" height="16" class="purple thin"/><text x="1310" y="917" class="small">Proxy / API access</text>
+  <rect x="1270" y="928" width="30" height="16" class="yellow thin"/><text x="1310" y="941" class="small">GitOps controller</text>
+</svg>
