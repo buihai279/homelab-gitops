@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ts-demo
+  namespace: ts-demo
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: ts-demo
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: ts-demo
+    spec:
+      containers:
+        - name: ts-demo
+          image: ghcr.io/buihai279/homelab-gitops/ts-demo:latest
+          imagePullPolicy: Always
+          env:
+            - name: APP_VERSION
+              value: latest
+          ports:
+            - name: http
+              containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 5
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /healthz
+              port: http
+            initialDelaySeconds: 15
+            periodSeconds: 20

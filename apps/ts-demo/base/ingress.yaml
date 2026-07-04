@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: ts-demo
+  namespace: ts-demo
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: ts-demo.local
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: ts-demo
+                port:
+                  name: http
+    - http:
+        paths:
+          - path: /ts-demo
+            pathType: Prefix
+            backend:
+              service:
+                name: ts-demo
+                port:
+                  name: http

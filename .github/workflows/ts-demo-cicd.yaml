@@ -1,0 +1,73 @@
+name: ts-demo-cicd
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - services/ts-demo/**
+      - apps/ts-demo/**
+      - .github/workflows/ts-demo-cicd.yaml
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  packages: write
+
+concurrency:
+  group: ts-demo-cicd-main
+  cancel-in-progress: true
+
+jobs:
+  build-test-push-update-gitops:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+          cache-dependency-path: services/ts-demo/pnpm-lock.yaml
+
+      - name: Install dependencies
+        working-directory: services/ts-demo
+        run: pnpm install --no-frozen-lockfile
+
+      - name: Typecheck
+        working-directory: services/ts-demo
+        run: pnpm check
+
+      - name: Build
+        working-directory: services/ts-demo
+        run: pnpm build
+
+      - name: Log in to GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Build and push image
+        uses: docker/build-push-action@v6
+        with:
+          context: services/ts-demo
+          push: true
+          tags: |
+            ghcr.io/buihai279/homelab-gitops/ts-demo:${{ github.sha }}
+            ghcr.io/buihai279/homelab-gitops/ts-demo:latest
+
+      - name: Update GitOps image tag
+        run: |
+          sed -i "s/newTag: .*/newTag: ${GITHUB_SHA}/" apps/ts-demo/overlays/k3s-master/kustomization.yaml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add apps/ts-demo/overlays/k3s-master/kustomization.yaml
+          git commit -m "Deploy ts-demo ${GITHUB_SHA}" || exit 0
+          git push
